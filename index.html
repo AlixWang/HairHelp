@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>自动下载文件</title>
+  </head>
+  <script src="https://cdn.bootcss.com/moment.js/2.20.1/moment.min.js"></script>
+  <body>
+    <div>
+      <div>线下</div>
+      <label for="startTime">开始时间:<input value="2020-01-01" name="startTime" /></label>
+      <label for="endTime">结束时间:<input value="2020-02-27" name="endTime"/></label>
+      <label>无审核抢单<input type="radio" name="status" checked value="100000010,100000015,100000025,100000030,100000035,100000040,100000045" /></label>
+      <label>有审核抢单<input type="radio" name="status" value="100000010,100000015,100000025,100000030,100000035,100000040,100000045,100000075,100000085" /></label>
+      <label>已结单<input type="radio" name="status" value="100000055,100000060"/></label>
+      <label>网点编码:<input value="" name="hsicrmServicestationcode" /></label>
+      <button id="download">下载</button>
+    </div>
+    <div>
+      <div>网单</div>
+       <label for="startTime">开始时间:<input value="2020-01-01" name="netstartTime" /></label>
+      <label for="endTime">结束时间:<input value="2020-02-27" name="netendTime"/></label>
+     <!-- <label>无审核抢单<input type="radio" name="netstatus" checked value="100000010,100000015,100000025,100000030,100000035,100000040,100000045" /></label>
+      <label>有审核抢单<input type="radio" name="netstatus" value="100000010,100000015,100000025,100000030,100000035,100000040,100000045,100000075,100000085" /></label>
+      <label>已结单<input type="radio" name="netstatus" value="100000055,100000060"/></label>
+      <label>网点编码:<input value="" name="hsicrmServicestationcode" /></label>-->
+      <button id="netdownload">下载</button>
+    </div>
+    <script>
+      const baseUrl =  "http://hcc.haier.net/ordinaryPath/ordinaryTool/exportHsicrmWorkorderPage";
+      const netBaseUrl = "http://hcc.haier.net/ordinaryPath/ordinaryOrder/exportNetWorkOrder";
+      const config = {
+       hsicrmWorkorderstatuscode :'100000010,100000015,100000025,100000030,100000035,100000040,100000045,100000075,100000085',
+       pageIndex :1,
+       queryTimePhase : null,
+       pageSize :50,
+       hsicrmServicestationcode :"",
+      }
+  
+
+      const netConfig = {
+       hsicrmWorkorderstatuscode :'100000015,100000025,100000030,100000035,100000040,100000045,100000010,100000075,100000080,100000085',
+       pageIndex :1,
+       queryTimePhase : null,
+       pageSize :50,
+       hsicrmServicestationcode :"",
+      }
+
+      const downBtn = document.querySelector('#download')
+      const netDownBtn = document.querySelector('#netdownload')
+
+      
+      const geneUrls = ({startTime, endTime, status, hsicrmServicestationcode, config, baseUrl, type}) => {
+        if(type === 'net') {
+          
+        } else {
+          config.hsicrmServicestationcode = hsicrmServicestationcode
+          config.hsicrmWorkorderstatuscode = status;
+        }
+        let dates = []
+        function pushDate(startDate,endDate) {
+          if(moment(startDate).add(6,'days').isBefore(endDate)) {
+            const startDateTwo =  moment(startDate).add(6,'days').format('YYYY-MM-DD')
+            dates.push({
+              queryStartDate: startDate + (type === 'net' ? "" :'%2000:00:00'), 
+              queryEndDate: startDateTwo + (type === 'net'? "":'%2023:59:59')
+            })
+            pushDate(moment(startDateTwo).add(1,'days').format('YYYY-MM-DD'), endDate);
+          } else {
+            dates.push({
+              queryStartDate:startDate + (type ===  'net' ? "" : '%2000:00:00'),
+              queryEndDate:endDate+ (type === "net" ? "" :'%2023:59:59')
+            })
+            return
+          }
+        }
+        pushDate(startTime, endTime);
+  
+        let urls = []
+        dates.forEach(item => {
+          const { queryStartDate, queryEndDate } = item
+          let url = ''
+          let params = ''
+          url += baseUrl;
+          if(type === 'net') {
+          url += `?hsicrmRegistrationtimeBegin=${queryStartDate}&hsicrmRegistrationtimeEnd=${queryEndDate}&`
+          } else {
+          url += `?queryStartDate=${queryStartDate}&queryEndDate=${queryEndDate}&`
+          }
+          
+          Object.keys(config).forEach(item => {
+            params+=`${item}=${config[item]}&`
+          })
+          url += params
+          urls.push(url)
+        })
+        return urls;
+      
+    }
+    
+
+      downBtn.addEventListener('click', () => {
+        const startTime = document.querySelector('input[name="startTime"]').value
+        const endTime = document.querySelector('input[name="endTime"]').value
+        const status = document.querySelector('input[name="status"]:checked').value
+        const hsicrmServicestationcode = document.querySelector('input[name="hsicrmServicestationcode"]').value
+        const urls = geneUrls({startTime, endTime, status, hsicrmServicestationcode, config, baseUrl});
+        console.log(urls)
+        urls && urls.forEach(url => {
+          const a  = document.createElement('a')
+          a.href = url
+          a.target = "_blank"
+          a.click()
+        })
+      })
+      netDownBtn.addEventListener('click', () => {
+        const startTime = document.querySelector('input[name="netstartTime"]').value
+        const endTime = document.querySelector('input[name="netendTime"]').value
+        const urls = geneUrls({startTime, endTime, config: netConfig, baseUrl: netBaseUrl, type:'net'})
+        console.log(urls)
+        urls && urls.forEach(url => {
+          const a  = document.createElement('a')
+          a.href = url
+          a.target = "_blank"
+          a.click()
+        })
+
+      })
+    </script>
+  </body>
+</html>
+
