@@ -33,6 +33,7 @@ const App = () => {
 
   const handleDownload = (item) => {
     let url = item.url.includes("?")?item.url:item.url+'?';
+    const a = document.createElement('a')
     Object.keys(item).forEach((key) => {
       const ignoreKey = ["regionName", "title", "url"];
       if (!ignoreKey.includes(key)) {
@@ -43,7 +44,9 @@ const App = () => {
         }
       }
     });
-    console.log(url)
+    a.href=url;
+    a.target="_blank";
+    a.click();
   };
 
   return (
