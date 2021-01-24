@@ -44,9 +44,7 @@ const App = () => {
         }
       }
     });
-    a.href=url;
-    a.target="_blank";
-    a.click();
+    window.open(url)
   };
 
   return (
