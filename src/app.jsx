@@ -1,7 +1,6 @@
 import { render } from "react-dom";
 import React, { useReducer } from "react";
 import { config } from "./config";
-console.log(config);
 const App = () => {
   const reducer = (state, action) => {
     if (action.type === "CHANGE_VALUE") {
@@ -19,8 +18,6 @@ const App = () => {
 
   const [state, dispactch] = useReducer(reducer, config);
 
-  console.log(state, dispactch);
-
   const handlechangeInput = (index, key, value) => {
     console.log(index, key, value);
     dispactch({
@@ -32,19 +29,21 @@ const App = () => {
   };
 
   const handleDownload = (item) => {
-    let url = item.url.includes("?")?item.url:item.url+'?';
-    const a = document.createElement('a')
+    let url = item.url.includes("?") ? item.url : item.url + "?";
     Object.keys(item).forEach((key) => {
-      const ignoreKey = ["regionName", "title", "url"];
+      const ignoreKey = ["title", "url"];
       if (!ignoreKey.includes(key)) {
         if (key === "filed") {
-          url += key+ "=" + item[key].join(",") + "&"
+          url += key + "=" + item[key].join(",") + "&";
         } else {
-          url += key + "=" +item[key] + "&"
+          url += key + "=" + item[key] + "&";
         }
       }
     });
-    window.open(url)
+    const a = document.createElement("a");
+    a.href = encodeURI(url);
+    a.target = "_blank";
+    a.click();
   };
 
   return (
