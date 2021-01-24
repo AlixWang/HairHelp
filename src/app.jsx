@@ -52,9 +52,9 @@ const App = () => {
       {state &&
         state.map((item, index) => {
           return (
-            <>
+            <div style={{marginBottom:10}}>
               {" "}
-              <span>{item.title}</span>
+              <span style={{color:"#333"}}>{item.title}&nbsp;&nbsp;</span>
               <label>
                 开始时间：
                 <input
@@ -88,7 +88,7 @@ const App = () => {
                 type="submit"
                 value="下载"
               />
-            </>
+            </div>
           );
         })}
     </div>
