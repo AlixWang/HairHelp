@@ -9,7 +9,7 @@ export const  config = [
     filed: ["woSum", "yingGrabNum", "grabPushPersonNum", "grabPushPerson_rate", "noPushPersonNum", "noPushPerson_rate" ,"undefined", "undefined",],
     sort: "wanggeCode",
     order: "asc",
-    url: "http://10.133.0.119:8099/reportWoqiangRegIndSerFwbNewController.do?exportXlsRegWgeSer2"
+    url: "http://10.133.0.119:8099/reportWoqiangRegIndSerFwbNewController.do?exportXlsRegWgeSer2&"
   }
 ];
 
@@ -29,3 +29,5 @@ export const  config = [
 // &wanggeCodes=
 // &serviceCodes=
 // &ids=
+
+http://10.133.0.119:8099/reportWoqiangRegIndSerFwbNewController.do?exportXlsRegWgeSer2&createTime_begin=2021-01-01&createTime_end=2021-01-23&industryCodes=ZHL,XYJ,XWJ,DR,CD,KT&regionCodes=HR11&filed=woSum,yingGrabNum,grabPushPersonNum,grabPushPerson_rate,noPushPersonNum,noPushPerson_rate,undefined,undefined&sort=wanggeCode&order=asc&
