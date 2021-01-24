@@ -42,7 +42,8 @@ const App = () => {
     });
     const a = document.createElement("a");
     a.href = encodeURI(url);
-    a.target = "_blank";
+    // a.target = "_blank";
+    a.download=true
     a.click();
   };
 
