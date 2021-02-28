@@ -181,5 +181,27 @@ isGrid:"",
 isGrid:"",
     url:
       "http://10.133.0.119:8099/reportSignRegIndQuySerNewController.do?exportXlsRegIndSer2New&",
+  },{
+    title: "工单人力调配--产业",
+    createTime_begin: "2021-01-01",
+    createTime_end: "2021-01-23",
+    regionName: "南京市场服务小微",
+    //industryCodes: "ZHL,XYJ,XWJ,DR,CD,KT",
+    //regionCodes: "HR11",
+    filed: ['regionName','industryName','woSum','yingGrabNum','undefined','undefined','undefined' ],
+    ids: "",
+    url:
+      "http://10.133.0.119:8099/reportDeployRegIndWgeSerNewController.do?exportXlsRegIndSer2New&",
+  },{
+    title: "工单人力调配--网格",
+    createTime_begin: "2021-01-01",
+    createTime_end: "2021-01-23",
+    regionName: "南京市场服务小微",
+    //industryCodes: "ZHL,XYJ,XWJ,DR,CD,KT",
+    //regionCodes: "HR11",
+    filed: ['regionName','wanggeName','woSum','yingGrabNum','undefined','undefined','undefined'],
+    ids: "",
+    url:
+      "http://10.133.0.119:8099/reportDeployRegIndWgeSerNewController.do?exportXlsRegWgeSer2New&",
   }
 ];
